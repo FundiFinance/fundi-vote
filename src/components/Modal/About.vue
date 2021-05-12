@@ -60,7 +60,7 @@ export default {
     return {
       pkg,
       // hubUrl: 'https://fundi-vote-api.herokuapp.com',
-      hubUrl: 'http://localhost:3000',
+      hubUrl: 'http://45.77.123.199/vote',
       ipfsNode: 'ipfs.io',
     };
   },

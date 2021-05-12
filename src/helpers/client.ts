@@ -1,6 +1,6 @@
 class Client {
   request(command, body?) {
-    const url = `http://localhost:3000/api/${command}`;
+    const url = `http://45.77.123.199/vote/api/${command}`;
     const init: any = {
       mode: 'cors',
       cache: 'default',
