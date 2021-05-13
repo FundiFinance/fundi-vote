@@ -1,12 +1,12 @@
 {
   "key": "fundi",
   "name": "Fundi Finance",
-  "chainId": 42,
+  "chainId": 97,
   "decimals": 18,
   "symbol": "FF",
   "defaultView": "all",
-  "address": "0x1c55ee91d9fedcc895183886e3d0197bab469019",
-  "token": "0x1c55ee91d9fedcc895183886e3d0197bab469019",
+  "address": "0x30DdeC6f1047DCe44d3b5bb3dbbF7af293d9706B",
+  "token": "0x30DdeC6f1047DCe44d3b5bb3dbbF7af293d9706B",
   "core": [],
   "min": 0,
   "invalid": []
