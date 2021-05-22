@@ -44,8 +44,7 @@ export default {
   data() {
     return {
       pkg,
-      // hubUrl: 'https://fundi-vote-api.herokuapp.com',
-      hubUrl: 'http://45.77.123.199/vote',
+      hubUrl: 'https://testnet.api.fundifinance.com/vote',
       ipfsNode: 'ipfs.io',
     };
   },
