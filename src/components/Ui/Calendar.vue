@@ -86,11 +86,14 @@ export default {
   },
   methods: {
     formatDate(year, month, day) {
-      return new Date(year, month, day).toISOString().split('T')[0];
+      let data = new Date(year, month, day);
+      const offset = data.getTimezoneOffset();
+      data = new Date(data.getTime() - offset * 60 * 1000);
+      return data.toISOString().split('T')[0];
     },
     toggleDay(year, month, day) {
       this.input = this.formatDate(year, month, day);
-      this.$emit('input', this.formatDate(year, month, day+1));
+      this.$emit('input', this.input);
     },
     isSelectable() {
       return true;
