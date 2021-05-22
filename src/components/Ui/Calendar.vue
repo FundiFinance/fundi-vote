@@ -90,7 +90,7 @@ export default {
     },
     toggleDay(year, month, day) {
       this.input = this.formatDate(year, month, day);
-      this.$emit('input', this.input);
+      this.$emit('input', this.formatDate(year, month, day+1));
     },
     isSelectable() {
       return true;
