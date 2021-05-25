@@ -20,15 +20,15 @@
           <template v-else>
             <div
               class="bg-gray-9 rounded-1 anim-pulse mb-3"
-              style="width: 100%; height: 34px;"
+              style="width: 100%; height: 34px"
             />
             <div
               class="bg-gray-9 rounded-1 anim-pulse mb-3"
-              style="width: 40%; height: 34px;"
+              style="width: 40%; height: 34px"
             />
             <div
               class="bg-gray-9 rounded-1 anim-pulse mb-4"
-              style="width: 65px; height: 28px;"
+              style="width: 65px; height: 28px"
             />
           </template>
         </div>
@@ -177,7 +177,7 @@ export default {
     },
   },
   watch: {
-    'web3.account': async function(val, prev) {
+    'web3.account': async function (val, prev) {
       if (val && val.toLowerCase() !== prev) {
         this.init();
       }
@@ -201,7 +201,7 @@ export default {
       this.results = proposalObj.results;
       this.totalScore = proposalObj.totalScore;
       this.scores = proposalObj.scores;
-      this.score = proposalObj.score;
+      this.score = proposalObj.score > 1000 ? 1000 : proposalObj.score;
     },
   },
   async created() {
