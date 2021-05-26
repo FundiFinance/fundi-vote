@@ -132,7 +132,7 @@ const actions = {
       result.results.totalScores = payload.choices.map((choice, i) =>
         Object.values(result.votes)
           .filter((vote: any) => vote.msg.payload.choice === i + 1)
-          .reduce((a, b: any) => a + (b.score > 100 ? 100 : b.score), 0)
+          .reduce((a, b: any) => a + (b.score > 1000 ? 1000 : b.score), 0)
       );
 
       result.results.totalVoteScores = result.results.totalScores.reduce(
