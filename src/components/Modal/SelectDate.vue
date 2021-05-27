@@ -9,7 +9,7 @@
       </div>
       <div v-else>
         <h3 class="m-4 mb-0 text-center">Select {{ selectedDate }} time</h3>
-        <div class="d-flex m-4 mx-auto" style="max-width: 160px;">
+        <div class="d-flex m-4 mx-auto" style="max-width: 160px">
           <UiButton class="px-0 width-fit">
             <input
               v-model="form.h"
@@ -67,8 +67,14 @@ export default {
   methods: {
     handleSubmit() {
       if (this.step === 0) return (this.step = 1);
+      const currentDate = new Date();
       const [year, month, day] = this.input.split('-');
-      const date = new Date(year, month - 1, day, this.form.h, this.form.m, 0);
+      const date = new Date(year, month - 1, day);
+      if ((date <= currentDate) & (this.form.h < currentDate.getHours())) {
+        this.form.h = currentDate.getHours();
+        this.form.m = currentDate.getMinutes();
+      }
+      date.setHours(this.form.h, this.form.m, 0);
       const input = date.getTime() / (1e3).toFixed();
       this.$emit('input', input);
       this.$emit('close');

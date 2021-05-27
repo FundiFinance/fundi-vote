@@ -84,7 +84,8 @@
             :loading="loading"
             class="d-block width-full button--submit"
           >
-            Publish
+            <span v-if="!isPeriodValid">Period must be at least 48h</span>
+            <span v-else>Publish</span>
           </UiButton>
         </Block>
       </div>
@@ -126,11 +127,25 @@ export default {
     };
   },
   computed: {
+    isPeriodValid() {
+      if (
+        this.form.start &&
+        this.form.end &&
+        this.form.start != '' &&
+        this.form.end != '' &&
+        this.form.end > this.form.start
+      ) {
+        return Math.floor((this.form.end - this.form.start) / 60 / 60) >= 48;
+      }
+      return true;
+    },
     space() {
       return this.web3.spaces[this.key];
     },
     isValid() {
-      // const ts = (Date.now() / 1e3).toFixed();
+      const minPeriod =
+        Math.floor((this.form.end - this.form.start) / 60 / 60) >= 48;
+
       return (
         !this.loading &&
         this.web3.account &&
@@ -140,6 +155,7 @@ export default {
         // this.form.start >= ts &&
         this.form.end &&
         this.form.end > this.form.start &&
+        minPeriod &&
         this.choices.length >= 2 &&
         !this.choices.some(a => a.text === '')
       );
