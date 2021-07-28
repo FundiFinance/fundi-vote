@@ -54,7 +54,7 @@ export default {
 
   &.button-header {
     background-color: transparent;
-    color: #000;
+    color: #ffffff;
     border: 1px solid var(--border-color);
 
     &:hover {
