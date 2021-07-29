@@ -7,19 +7,38 @@
           <div class="d-flex flex-items-center flex-auto">
             <h2 class="mr-2">
               Proposals
-              <UiCounter :counter="totalProposals" class="ml-1" />
+              <UiCounter
+                :counter="totalProposals"
+                class="ml-1"
+                style="
+                  background-color: rgb(19, 19, 19);
+                  border: 1px solid var(--border-color);
+                "
+              />
             </h2>
           </div>
         </div>
         <router-link v-if="$auth.isAuthenticated" :to="{ name: 'create' }">
-          <UiButton>New proposal</UiButton>
+          <UiButton
+            class="button-header"
+            style="background-color: #131313; color: #fff"
+          >
+            New proposal</UiButton
+          >
         </router-link>
       </div>
     </Container>
     <Container :slim="true">
       <Block :slim="true">
         <div
-          class="px-4 py-3 header-bg overflow-auto menu-tabs rounded-top-0 rounded-md-top-2"
+          class="
+            px-4
+            py-3
+            header-bg
+            overflow-auto
+            menu-tabs
+            rounded-top-0 rounded-md-top-2
+          "
         >
           <router-link
             v-for="state in states"

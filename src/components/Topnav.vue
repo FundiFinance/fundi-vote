@@ -2,29 +2,9 @@
   <Sticky class="mb-4">
     <nav id="topnav" class="width-full header-bg">
       <Container>
-        <div class="d-flex flex-items-center" style="height: 78px;">
+        <div class="d-flex flex-items-center" style="height: 78px">
           <div class="flex-auto d-flex flex-items-center">
-            <router-link
-              :to="{ name: 'home' }"
-              class="d-inline-block d-flex flex-items-center"
-              style="font-size: 24px; padding-top: 4px;"
-            >
-              <span
-                :class="space && 'hide-sm'"
-                class="mr-1"
-                v-text="'vote.fundi'"
-              />
-            </router-link>
-            <router-link
-              v-if="space"
-              :to="{ name: 'proposals' }"
-              class="d-inline-block d-flex flex-items-center"
-              style="font-size: 24px; padding-top: 4px;"
-            >
-              <span class="pl-1 pr-2 text-gray" v-text="'/'" />
-              <Token :space="space.key" symbolIndex="space" size="28" />
-              <span class="ml-2" v-text="space.name" />
-            </router-link>
+            <img :src="require(`@/assets/fundi/logo.png`)" width="200" />
           </div>
           <div :key="web3.account">
             <template v-if="$auth.isAuthenticated">
@@ -46,6 +26,7 @@
               v-if="!$auth.isAuthenticated"
               @click="modalOpen = true"
               class="button-header"
+              style="background-color: #c5c8a9"
               :loading="loading"
             >
               Connect<span class="hide-sm" v-text="' wallet'" />
