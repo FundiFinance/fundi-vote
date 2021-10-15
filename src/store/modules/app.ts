@@ -1,6 +1,7 @@
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
 import { formatProposal, formatProposals, isEmpty } from '@/helpers/utils';
+import { getBalance } from '@/helpers/balance';
 import { version } from '@/../package.json';
 
 const mutations = {
@@ -30,6 +31,15 @@ const mutations = {
   },
   GET_PROPOSAL_FAILURE(_state, payload) {
     console.debug('GET_PROPOSAL_FAILURE', payload);
+  },
+  GET_HOLDERS_REQUEST() {
+    console.debug('GET_HOLDERS_REQUEST');
+  },
+  GET_HOLDERS_SUCCESS() {
+    console.debug('GET_HOLDERS_SUCCESS');
+  },
+  GET_HOLDERS_FAILURE(_state, payload) {
+    console.debug('GET_HOLDERS_FAILURE', payload);
   },
 };
 
@@ -100,25 +110,44 @@ const actions = {
       // -- Fetch power
       const payload = result.proposal.msg.payload;
       const snapshot = payload.start;
-      const res: any = await client.request(
-        `${space.token}/snapshot/${snapshot}`
-      );
-      const scores = await ipfs.get(res[snapshot]);
-      // FIXME: BigNum to avoid parse issues
-      Object.keys(scores).forEach(k => (scores[k] = parseFloat(scores[k])));
 
-      result.scores = scores;
-      result.totalScore = Object.values(scores).reduce((a, b: any) => a + b, 0);
-      result.score = scores[address.toLowerCase()];
-      // !- Fetch power
-
-      // -- Calculate results
-      Object.keys(result.votes).forEach(k => {
-        result.votes[k].score = scores[k.toLowerCase()];
-        if (result.votes[k].score === undefined) {
-          delete result.votes[k];
+      let res: any;
+      let scores;
+      try {
+        res = await client.request(`${space.token}/snapshot/${snapshot}`);
+        scores = await ipfs.get(res[snapshot]);
+      } catch (err) {
+        res = await client.request(`${space.address}/snapshot/holders`);
+        if (res.holders) {
+          scores = await ipfs.get(res.holders);
+        } else {
+          res = await getBalance(address);
+          scores = {
+            [address.toLowerCase()]: res / 1e18
+          };
         }
-      });
+      }
+
+      try {
+        // FIXME: BigNum to avoid parse issues
+        Object.keys(scores).forEach(k => (scores[k] = parseFloat(scores[k])));
+  
+        result.scores = scores;
+        result.totalScore = Object.values(scores).reduce((a, b: any) => a + b, 0);
+        result.score = scores[address.toLowerCase()];
+        // !- Fetch power
+  
+        // -- Calculate results
+        Object.keys(result.votes).forEach(k => {
+          result.votes[k].score = scores[k.toLowerCase()];
+          if (result.votes[k].score === undefined) {
+            delete result.votes[k];
+          }
+        });
+
+      } catch (err) {
+        console.log('score calculation', err);
+      }
 
       result.results = {};
 
@@ -145,7 +174,28 @@ const actions = {
       commit('GET_PROPOSAL_SUCCESS');
       return result;
     } catch (e) {
+      console.log('Error ==>', e);
       commit('GET_PROPOSAL_FAILURE', e);
+    }
+  },
+  getHolders: async ({ commit }, space) => {
+    commit('GET_HOLDERS_REQUEST');
+    try {
+      // -- Fetch /holders snapshot
+      const snapshot: any = await client.request(
+        `${space.address}/snapshot/holders`
+      );
+      // !- Fetch /holders snapshot
+
+      // -- Fetch address:BIFI
+      const holders = await ipfs.get(snapshot.holders);
+      // !- Fetch address:BIFI
+
+      commit('GET_HOLDERS_SUCCESS');
+      return holders;
+    } catch (e) {
+      commit('GET_HOLDERS_FAILURE', e);
+      return;
     }
   },
 };
