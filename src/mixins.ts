@@ -36,7 +36,7 @@ export default {
       return shorten(str);
     },
     _ipfsUrl(ipfsHash: string): string {
-      return `https://ipfs.io/ipfs/${ipfsHash}`;
+      return `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
     },
     _bscscanLink(str: string, type: string): string {
       return bscscanLink(str, type);

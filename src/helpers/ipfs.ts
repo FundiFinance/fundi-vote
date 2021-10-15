@@ -5,7 +5,7 @@ class Client {
     if (!ipfsHash) {
       throw Error("ERR")
     }
-    const url = `https://ipfs.io/ipfs/${ipfsHash}`;
+    const url = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
     return fetch(url).then(res => res.json());
   }
 }
