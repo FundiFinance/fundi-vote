@@ -7,7 +7,7 @@
             <img :src="require(`@/assets/fundi/logo.png`)" width="200" />
           </div>
           <div :key="web3.account">
-            <template v-if="$auth.isAuthenticated">
+            <template v-if="$auth.isAuthenticated && this.chainId == web3.chainId">
               <UiButton
                 @click="modalOpen = true"
                 class="button-header"
@@ -31,6 +31,12 @@
             >
               Connect<span class="hide-sm" v-text="' wallet'" />
             </UiButton>
+            <UiButton
+              v-if="this.chainId != web3.chainId"
+              class="button-header"
+              @click="switchNetwork">
+              Switch<span class="hide-sm" v-text="' Network'" />
+            </UiButton>
             <UiButton @click="modalAboutOpen = true" class="ml-2 button-header">
               <span v-text="'?'" class="ml-n1 mr-n1" />
             </UiButton>
@@ -49,13 +55,16 @@
 
 <script>
 import { mapActions } from 'vuex';
+import config from '@/config.json';
 
 export default {
   data() {
+
     return {
       loading: false,
       modalOpen: false,
       modalAboutOpen: false,
+      chainId: config.chainId,
     };
   },
   computed: {
@@ -75,6 +84,17 @@ export default {
       await this.login(connector);
       this.loading = false;
     },
+    async switchNetwork() {
+      console.log('switch network');
+      try {
+        window.web3.currentProvider.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: '0x38' }],
+        });
+      } catch (error) {
+        console.log('[TestHandler] error ==>', error);
+      }
+    }
   },
 };
 </script>

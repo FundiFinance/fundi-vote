@@ -46,6 +46,7 @@ const mutations = {
     
     Vue.set(_state, 'network', config.networks[chainId]);
     Vue.set(_state, 'spaces', spaces[chainId]);
+    Vue.set(_state, 'chainId', chainId);
     console.debug('HANDLE_CHAIN_CHANGED', chainId);
   },
   HANDLE_ACCOUNTS_CHANGED(_state, payload) {
