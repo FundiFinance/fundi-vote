@@ -102,7 +102,7 @@ export default {
       ];
       return this.space.showOnlyCore
         ? states.filter(state => !['core', 'community'].includes(state))
-        : states;
+        : states.filter(state => !['core', 'community'].includes(state));
     },
     totalProposals() {
       return Object.keys(this.proposals).length;

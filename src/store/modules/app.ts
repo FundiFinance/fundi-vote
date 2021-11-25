@@ -122,7 +122,28 @@ const actions = {
           scores = await ipfs.get(res.holders);
         } else {
           res = await getBalance(address);
+          const map = new Map();
+          // try {
+          //   await Promise.all(Object.keys(votes).map(key => (async function () {
+          //     console.log('key ==>', key);
+          //     let balance = await getBalance(key) / 1e18;
+          //     console.log('balance ==>', key, balance);
+          //     map.set(key.toLowerCase(), balance);
+          //     return;
+          //   })))
+          // } catch (err1) {
+          //   console.log('err1 ==>', err1);
+          // }
+          
+          scores = map;
+          for(const key of Object.keys(votes as Array<any>)) {
+            scores = {
+              ...scores,
+              [key.toLowerCase()]: await getBalance(key.toLowerCase()) / 1e18
+            }
+          }
           scores = {
+            ...scores,
             [address.toLowerCase()]: res / 1e18
           };
         }
